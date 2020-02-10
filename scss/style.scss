@@ -1,0 +1,73 @@
+$accentColor: rgb(20, 172, 223);
+
+body{
+    overflow: hidden;
+    padding: 25px 400px;
+    background: url(../img/background.jpg) no-repeat fixed;
+    background-size: 100vw 100vh;
+    min-width: 100vw;
+    min-height: 100vh;
+    margin: auto;
+    box-sizing: border-box;
+    #wrapper{
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        margin: 25px;
+        //width: 100%;
+        min-height: 100%;
+        margin: auto;
+        #foreground, #background{
+            width: 800px;
+            height: 800px;
+            z-index: 2;
+            box-sizing: border-box;
+            position: relative;
+            left: 10px;
+            //width: 97.5vw;
+            //height: 95vh;
+            //margin: auto;
+            background: white;
+        }
+        #background{
+            position: absolute;
+            z-index: 1;
+            width: 1100px;
+            left: 425px;
+            bottom: 160px;
+            background: $accentColor;
+            #parties, #nonparties{
+                position: relative;
+                margin-left: 75%;
+            }
+        }
+        #foreground{
+            padding: 50px;
+            #logo{
+                width: 50%;
+            }
+            #textLogo{
+                font-weight: bold;
+            }
+            #typeTitle{
+                font-weight: bold;
+                color: $accentColor;
+                margin: 25px auto;
+                //font-size: 22px;
+            }
+            #start{
+                padding: 5px 50px;
+                background: black;
+                border: none;
+                border-radius: 5px;
+                color: white;
+                font-size: 30px;
+                margin-left: 75%;
+                margin-top: 5%;
+            }
+            #start:hover{
+                background: $accentColor;
+            }
+        }
+    }
+}
