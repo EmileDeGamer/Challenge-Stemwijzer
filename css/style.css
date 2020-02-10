@@ -25,7 +25,7 @@ body #wrapper {
   margin: auto;
 }
 
-body #wrapper #foreground, body #wrapper #background {
+body #wrapper #foreground, body #wrapper #background, body #wrapper #display {
   width: 800px;
   height: 800px;
   z-index: 2;
@@ -45,9 +45,21 @@ body #wrapper #background {
   background: #14acdf;
 }
 
-body #wrapper #background #parties, body #wrapper #background #nonparties {
+body #wrapper #background #parties {
+  color: white;
+  font-weight: bold;
   position: relative;
   margin-left: 75%;
+}
+
+body #wrapper #background #parties h6 {
+  font-weight: bold;
+}
+
+body #wrapper #background #parties #partiesDisplay {
+  list-style: none;
+  padding: 0;
+  margin: auto;
 }
 
 body #wrapper #foreground {
@@ -69,17 +81,60 @@ body #wrapper #foreground #typeTitle {
 }
 
 body #wrapper #foreground #start {
-  padding: 5px 50px;
+  padding: 5px 75px;
   background: black;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   color: white;
   font-size: 30px;
-  margin-left: 75%;
+  margin-left: 70%;
   margin-top: 5%;
 }
 
 body #wrapper #foreground #start:hover {
   background: #14acdf;
+}
+
+body #wrapper #display {
+  width: 1000px;
+}
+
+body #wrapper #display h1 {
+  color: #14acdf;
+  margin: 25px;
+  font-weight: bold;
+}
+
+body #wrapper #display p {
+  font-size: 25px;
+  margin: 25px;
+}
+
+body #wrapper #display #buttonsDisplay {
+  margin: 20px;
+}
+
+body #wrapper #display #buttonsDisplay button {
+  margin: auto 5px;
+  padding: 5px 25px;
+  background: black;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 30px;
+}
+
+body #wrapper #display #buttonsDisplay button:hover {
+  background: #14acdf;
+}
+
+body #wrapper #display #buttonsDisplay button:last-child {
+  margin-left: 15px;
+  background: white;
+  color: gray;
+}
+
+body #wrapper #display #buttonsDisplay button:last-child:hover {
+  color: black;
 }
 /*# sourceMappingURL=style.css.map */

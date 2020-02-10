@@ -14,19 +14,15 @@ body{
         flex-direction: column;
         box-sizing: border-box;
         margin: 25px;
-        //width: 100%;
         min-height: 100%;
         margin: auto;
-        #foreground, #background{
+        #foreground, #background, #display{
             width: 800px;
             height: 800px;
             z-index: 2;
             box-sizing: border-box;
             position: relative;
             left: 10px;
-            //width: 97.5vw;
-            //height: 95vh;
-            //margin: auto;
             background: white;
         }
         #background{
@@ -36,9 +32,19 @@ body{
             left: 425px;
             bottom: 160px;
             background: $accentColor;
-            #parties, #nonparties{
+            #parties{
+                color: white;
+                font-weight: bold;
+                h6{
+                    font-weight: bold;
+                }
                 position: relative;
                 margin-left: 75%;
+                #partiesDisplay{
+                    list-style: none;
+                    padding: 0;
+                    margin: auto;
+                }
             }
         }
         #foreground{
@@ -53,20 +59,56 @@ body{
                 font-weight: bold;
                 color: $accentColor;
                 margin: 25px auto;
-                //font-size: 22px;
             }
             #start{
-                padding: 5px 50px;
+                padding: 5px 75px;
                 background: black;
                 border: none;
-                border-radius: 5px;
+                border-radius: 10px;
                 color: white;
                 font-size: 30px;
-                margin-left: 75%;
+                margin-left: 70%;
                 margin-top: 5%;
             }
             #start:hover{
                 background: $accentColor;
+            }
+        }
+        #display{
+            width: 1000px;
+            h1{
+                color: $accentColor;
+                margin: 25px;
+                font-weight: bold;
+            }
+            p{
+                font-size: 25px;
+                margin: 25px;
+            }
+            #buttonsDisplay{
+                margin: 20px;
+                button{
+                    margin: auto 5px;
+                    padding: 5px 25px;
+                    background: black;
+                    border: none;
+                    border-radius: 10px;
+                    color: white;
+                    font-size: 30px;
+                }
+                button:hover{
+                    background: $accentColor;
+                }
+            }
+            #buttonsDisplay{
+                button:last-child{
+                    margin-left: 15px;
+                    background: white;
+                    color: gray;
+                }
+                button:last-child:hover{
+                    color: black;
+                }
             }
         }
     }
