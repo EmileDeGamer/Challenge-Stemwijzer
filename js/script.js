@@ -97,6 +97,7 @@ function choose(i){
         }
 
         let extraWeightQuestionsList = document.createElement('ul')
+        extraWeightQuestionsList.id = "extraWeightQuestionsList"
         for (let i = 0; i < subjects.length; i++) {
             let li = document.createElement('li')
             li.innerHTML = subjects[i]['title']
@@ -107,6 +108,7 @@ function choose(i){
             
         let nextButton = document.createElement('button')
         nextButton.innerHTML = "Calculate Match"
+        nextButton.id = "calculateMatchButton"
         nextButton.onclick = function(){
             for (let i = 0; i < chooseHistory.length; i++) {
                 if(chooseHistory[i] == buttons[0]){
@@ -123,28 +125,27 @@ function choose(i){
             let endButtons = ['Alle', 'Grote', 'Seculiere']
             let endList = document.createElement('div')
             endList.id = "endList"
+            let endButtonsDisplay = document.createElement('div')
+            endButtonsDisplay.id = "endButtonsDisplay"
             for (let i = 0; i < endButtons.length; i++) {
                 let button = document.createElement('button')
                 button.innerHTML = 'Geef ' + endButtons[i] + ' partijen weer'
                 button.onclick = function(){showTypeParty(i)}
-                display.appendChild(button)
+                endButtonsDisplay.appendChild(button)
             }
+            display.appendChild(endButtonsDisplay)
             display.appendChild(endList)
-
-            while(endList.style.display == "none"){
-                endList.style.display = "block"
-            }
 
             nextButton.style.display = "none"
             extraWeightQuestionsList.style.display = "none"
             showMatchedParties(parties)
         }
         display.appendChild(nextButton)
-    }
+        }
 }
 
 function previousStatement(){
-    if(counter == subjects.length){
+    if(document.getElementById('extraWeightQuestionsList').style.display !== "none"){
         for (let i = 1; i < display.childNodes.length; i++) {
             if (display.childNodes[i].style.display !== "none"){
                 display.childNodes[i].style.display = "none"
@@ -153,12 +154,34 @@ function previousStatement(){
                 display.childNodes[i].style.display = "block"
             }
         }
+        let tExtraWeightQuestionsList = document.getElementById('extraWeightQuestionsList')
+        if(tExtraWeightQuestionsList !== null){
+            tExtraWeightQuestionsList.remove()
+        }
+        let tEndButtonsDisplay = document.getElementById('endButtonsDisplay')
+        if(tEndButtonsDisplay !== null){
+            tEndButtonsDisplay.remove()
+        }
+        let tCalculateMatchButton = document.getElementById('calculateMatchButton')
+        if(tCalculateMatchButton !== null){
+            tCalculateMatchButton.remove()
+        }
+        counter = chooseHistory.length+1
+    }
+    else{
+        for (let i = 1; i < display.childNodes.length; i++) {
+            if (display.childNodes[i].style.display !== "none"){
+                display.childNodes[i].style.display = "none"
+            }
+        }
         let tEndList = document.getElementById('endList')
         if(tEndList !== null){
             tEndList.remove()
         }
-        counter = chooseHistory.length+1
+        document.getElementById('calculateMatchButton').style.display = "block"
+        extraWeightQuestionsList.style.display = "block"
     }
+    
     if(counter !== 1){
         counter--
         statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
