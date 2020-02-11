@@ -1,15 +1,4 @@
-console.log(subjects)
-console.log(parties)
-
 const minimumPartySize = 15
-
-/*let secularParties = []
-for (let i = 0; i < parties.length; i++) {
-    if(parties[i]['secular']){
-        secularParties.push(parties[i])
-    }
-}
-console.log(secularParties)*/
 
 let ul = document.getElementById('partiesDisplay')
 for (let i = 0; i < parties.length; i++) {
@@ -25,7 +14,9 @@ startButton.onclick = function(){nextStatement()}
 let counter = 0
 let buttons = ['Eens', 'Geen van beide', 'Oneens', 'Sla deze vraag over ->']
 let chooseHistory = []
+let convertedChooseHistory = []
 let matchCounter = []
+let extraWeightCounter = []
 function nextStatement(){
     if(counter == 0){
         let wrapper = document.getElementById('wrapper')
@@ -104,30 +95,47 @@ function choose(i){
         for (let i = 1; i < display.childNodes.length; i++) {
             display.childNodes[i].style.display = "none"
         }
-        let endButtons = ['Alle', 'Grote', 'Seculiere']
-        let endList = document.createElement('div')
-        endList.id = "endList"
-        for (let i = 0; i < endButtons.length; i++) {
-            let button = document.createElement('button')
-            button.innerHTML = 'Geef ' + endButtons[i] + ' partijen weer'
-            button.onclick = function(){showTypeParty(i)}
-            display.appendChild(button)
-        }
-        display.appendChild(endList)
 
-        for (let i = 0; i < chooseHistory.length; i++) {
-            if(chooseHistory[i] == buttons[0]){
-                chooseHistory[i] = "pro"
-            }
-            else if (chooseHistory[i] == buttons[1]){
-                chooseHistory[i] = "none"
-            }
-            else if (chooseHistory[i] == buttons[2]){
-                chooseHistory[i] = "contra"
-            }
+        let extraWeightQuestionsList = document.createElement('ul')
+        for (let i = 0; i < subjects.length; i++) {
+            let li = document.createElement('li')
+            li.innerHTML = subjects[i]['title']
+            li.onclick = function(){setExtraWeight(i)}
+            extraWeightQuestionsList.appendChild(li)
         }
+        display.appendChild(extraWeightQuestionsList)
+            
+        let nextButton = document.createElement('button')
+        nextButton.innerHTML = "Calculate Match"
+        nextButton.onclick = function(){
+            for (let i = 0; i < chooseHistory.length; i++) {
+                if(chooseHistory[i] == buttons[0]){
+                    convertedChooseHistory.push("pro")
+                }
+                else if (chooseHistory[i] == buttons[1]){
+                    convertedChooseHistory.push("none")
+                }
+                else if (chooseHistory[i] == buttons[2]){
+                    convertedChooseHistory.push("contra")
+                }
+            }
 
-        showMatchedParties(parties)
+            let endButtons = ['Alle', 'Grote', 'Seculiere']
+            let endList = document.createElement('div')
+            endList.id = "endList"
+            for (let i = 0; i < endButtons.length; i++) {
+                let button = document.createElement('button')
+                button.innerHTML = 'Geef ' + endButtons[i] + ' partijen weer'
+                button.onclick = function(){showTypeParty(i)}
+                display.appendChild(button)
+            }
+            display.appendChild(endList)
+
+            nextButton.style.display = "none"
+            extraWeightQuestionsList.style.display = "none"
+            showMatchedParties(parties)
+        }
+        display.appendChild(nextButton)
     }
 }
 
@@ -184,13 +192,21 @@ function showMatchedParties(tParties){
     let matchCounter = []
         
     for (let i = 0; i < tParties.length; i++) {
-        matchCounter.push({name: tParties[i]['name'], value: 0})
+        matchCounter.push({name: tParties[i]['name'], value: 0, extraWeight: false})
     }
+
     for (let i = 0; i < subjects.length; i++) {
         for (let x = 0; x < subjects[i].parties.length; x++) {
             for (let y = 0; y < tParties.length; y++) {
                 if(tParties[y]['name'] == subjects[i].parties[x]['name']){
-                    if(chooseHistory[x] == subjects[i].parties[x].position){
+                    if(convertedChooseHistory[x] == subjects[i].parties[x].position){
+                        for (let z = 0; z < extraWeightCounter.length; z++) {
+                            if(extraWeightCounter[z]['title'] == subjects[i]['title']){
+                                if(extraWeightCounter[z]['extraWeight']){
+                                    matchCounter[y]['value']++
+                                }
+                            }
+                        }
                         matchCounter[y]['value']++
                     }
                 }
@@ -220,4 +236,21 @@ function showMatchedParties(tParties){
         sortedMatchList.appendChild(li)
     }
     endList.appendChild(sortedMatchList)
+}
+
+function setExtraWeight(x){
+    for (let i = 0; i < subjects.length; i++) {
+        extraWeightCounter.push({title: subjects[i]['title'], extraWeight: false})
+    }
+
+    for (let i = 0; i < extraWeightCounter.length; i++) {
+        if(x == i){
+            if(extraWeightCounter[i]['extraWeight']){
+                extraWeightCounter[i]['extraWeight'] = false
+            }
+            else{
+                extraWeightCounter[i]['extraWeight'] = true
+            }
+        }
+    }
 }
