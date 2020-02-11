@@ -3,14 +3,6 @@ console.log(parties)
 
 const minimumPartySize = 15
 
-//get the opinions
-for (let i = 0; i < subjects.length; i++) {
-    for (let x = 0; x < subjects[i].parties.length; x++) {
-        console.log(subjects[i].parties[x].position)
-        
-    }
-}
-
 let secularParties = []
 for (let i = 0; i < parties.length; i++) {
     if(parties[i]['secular']){
@@ -122,8 +114,52 @@ function choose(i){
             display.appendChild(button)
         }
         display.appendChild(endList)
-        //display.innerHTML = ""
-        console.log(chooseHistory)
+
+        for (let i = 0; i < chooseHistory.length; i++) {
+            if(chooseHistory[i] == buttons[0]){
+                chooseHistory[i] = "pro"
+            }
+            else if (chooseHistory[i] == buttons[1]){
+                chooseHistory[i] = "none"
+            }
+            else if (chooseHistory[i] == buttons[2]){
+                chooseHistory[i] = "contra"
+            }
+        }
+        
+        for (let i = 0; i < parties.length; i++) {
+            matchCounter.push({name: parties[i]['name'], value: 0})
+        }
+        for (let i = 0; i < subjects.length; i++) {
+            for (let x = 0; x < subjects[i].parties.length; x++) {
+                if(chooseHistory[x] == subjects[i].parties[x].position){
+                    matchCounter[x]['value']++
+                }
+            }
+        }
+    
+        function sort(valuePath, array){
+            let path = valuePath.split('.')  
+          
+            return array.sort((a, b) => {
+               return getValue(b,path) - getValue(a,path)    
+            })
+          
+            function getValue(obj, path){
+              path.forEach(path => obj = obj[path])
+              return obj
+            }
+        }
+        
+        let matchCounter = sort('value', matchCounter)
+    
+        let sortedMatchList = document.createElement('ul')
+        for (let i = 0; i < matchCounter.length; i++) {
+            let li = document.createElement('li')
+            li.innerHTML = matchCounter['name']
+            sortedMatchList.appendChild(li)
+        }
+        display.appendChild(sortedMatchList)
     }
 }
 
@@ -162,7 +198,6 @@ function showTypeParty(x){
     }
     else if (x == 1){
         ul.innerHTML = ""
-        //add user changeable amount of lower than show parties amount
         for (let i = 0; i < parties.length; i++) {
             if(parties[i].size <= minimumPartySize){
                 let li = document.createElement('li')
@@ -180,24 +215,4 @@ function showTypeParty(x){
         }  
     }
     endList.appendChild(ul)
-    let matchList = document.createElement('ul')
-    for (let i = 0; i < chooseHistory.length; i++) {
-        if(chooseHistory[i] == buttons[0]){
-            chooseHistory[i] = "pro"
-        }
-        else if (chooseHistory[i] == buttons[1]){
-            chooseHistory[i] = "none"
-        }
-        else if (chooseHistory[i] == buttons[2]){
-            chooseHistory[i] = "contra"
-        }
-    }
-    for (let i = 0; i < subjects.length; i++) {
-        matchCounter.push(0)
-        for (let x = 0; x < subjects[i].parties.length; x++) {
-            if(chooseHistory[x] == subjects[i].parties[x].position){
-                matchCounter[i]++
-            } 
-        }
-    }
 }
