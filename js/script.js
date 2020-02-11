@@ -131,6 +131,10 @@ function choose(i){
             }
             display.appendChild(endList)
 
+            while(endList.style.display == "none"){
+                endList.style.display = "block"
+            }
+
             nextButton.style.display = "none"
             extraWeightQuestionsList.style.display = "none"
             showMatchedParties(parties)
@@ -140,11 +144,20 @@ function choose(i){
 }
 
 function previousStatement(){
-    for (let i = 1; i < display.childNodes.length; i++) {
-        if (display.childNodes[i].style.display == "none"){
-            display.childNodes[i].style.display = "block"
-            counter = chooseHistory.length+1
+    if(counter == subjects.length){
+        for (let i = 1; i < display.childNodes.length; i++) {
+            if (display.childNodes[i].style.display !== "none"){
+                display.childNodes[i].style.display = "none"
+            }
+            if(display.childNodes[i].id == "statementTitle" || display.childNodes[i].id == "statement" || display.childNodes[i].id == "buttonsDisplay"){
+                display.childNodes[i].style.display = "block"
+            }
         }
+        let tEndList = document.getElementById('endList')
+        if(tEndList !== null){
+            tEndList.remove()
+        }
+        counter = chooseHistory.length+1
     }
     if(counter !== 1){
         counter--
