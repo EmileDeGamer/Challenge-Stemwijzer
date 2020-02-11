@@ -110,11 +110,21 @@ body #wrapper #display p {
   margin: 25px;
 }
 
+body #wrapper #display #backButton {
+  border: none;
+  background: white;
+  color: gray;
+}
+
+body #wrapper #display #backButton:hover {
+  color: black;
+}
+
 body #wrapper #display #buttonsDisplay {
   margin: 20px;
 }
 
-body #wrapper #display #buttonsDisplay button {
+body #wrapper #display #buttonsDisplay button, body #wrapper #display #buttonsDisplay #backButton {
   margin: auto 5px;
   padding: 5px 25px;
   background: black;

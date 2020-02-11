@@ -14,6 +14,7 @@ startButton.onclick = function(){nextStatement()}
 
 let counter = 0
 let buttons = ['Eens', 'Geen van beide', 'Oneens', 'Sla deze vraag over ->']
+let chooseHistory = []
 function nextStatement(){
     if(counter == 0){
         let wrapper = document.getElementById('wrapper')
@@ -21,6 +22,11 @@ function nextStatement(){
         let display = document.createElement('div')
         let statementTitle = document.createElement('h1')
         let statement = document.createElement('p')
+        let backButton = document.createElement('button')
+        backButton.innerHTML = "<-"
+        backButton.id = "backButton"
+        backButton.onclick = function(){previousStatement()}
+        display.appendChild(backButton)
         display.id = "display"
         statementTitle.id = "statementTitle"
         statement.id = "statement"
@@ -37,16 +43,69 @@ function nextStatement(){
             buttonsDisplay.appendChild(button)
         }
         display.appendChild(buttonsDisplay)
+        counter++
+        statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
+        statement.innerHTML = subjects[counter-1]['statement']
     }
-    counter++
-    let display = document.getElementById('display')
-    let statementTitle = document.getElementById('statementTitle')
-    let statement = document.getElementById('statement')
-    statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
-    statement.innerHTML = subjects[counter-1]['statement']
-    console.log(counter)
 }
 
 function choose(i){
-    console.log(buttons[i])
+    if(counter !== subjects.length)
+    {
+        chooseHistory[counter-1] = buttons[i]
+        counter++
+        if(typeof chooseHistory[counter-1] !== 'undefined'){
+            for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+                if(buttonsDisplay.childNodes[i].id == chooseHistory[counter-1].toLowerCase()){
+                    buttonsDisplay.childNodes[i].style.background = "blue"
+                }
+                else{
+                    buttonsDisplay.childNodes[i].style.background = "black"
+                }
+            }
+        }
+        else{
+            for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+                buttonsDisplay.childNodes[i].style.background = "black"
+            }
+        }
+        statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
+        statement.innerHTML = subjects[counter-1]['statement']
+    }
+    else{
+        chooseHistory[counter-1] = buttons[i]
+        if(typeof chooseHistory[counter-1] !== 'undefined'){
+            for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+                if(buttonsDisplay.childNodes[i].id == chooseHistory[counter-1].toLowerCase()){
+                    buttonsDisplay.childNodes[i].style.background = "blue"
+                }
+                else{
+                    buttonsDisplay.childNodes[i].style.background = "black"
+                }
+            }
+        }
+        else{
+            for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+                buttonsDisplay.childNodes[i].style.background = "black"
+            }
+        }
+        //display.innerHTML = ""
+        console.log(chooseHistory)
+    }
 }
+
+function previousStatement(){
+    if(counter !== 1){
+        counter--
+        statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
+        statement.innerHTML = subjects[counter-1]['statement']
+        for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+            if(buttonsDisplay.childNodes[i].id == chooseHistory[counter-1].toLowerCase()){
+                buttonsDisplay.childNodes[i].style.background = "blue"
+            }
+            else{
+                buttonsDisplay.childNodes[i].style.background = "black"
+            }
+        }
+    }
+}    

@@ -85,9 +85,17 @@ body{
                 font-size: 25px;
                 margin: 25px;
             }
+            #backButton{
+                border: none;
+                background: white;
+                color: gray;
+            }
+            #backButton:hover{
+                color: black;
+            }
             #buttonsDisplay{
                 margin: 20px;
-                button{
+                button, #backButton{
                     margin: auto 5px;
                     padding: 5px 25px;
                     background: black;
@@ -99,8 +107,6 @@ body{
                 button:hover{
                     background: $accentColor;
                 }
-            }
-            #buttonsDisplay{
                 button:last-child{
                     margin-left: 15px;
                     background: white;
