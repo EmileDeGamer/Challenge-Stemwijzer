@@ -3,13 +3,13 @@ console.log(parties)
 
 const minimumPartySize = 15
 
-let secularParties = []
+/*let secularParties = []
 for (let i = 0; i < parties.length; i++) {
     if(parties[i]['secular']){
         secularParties.push(parties[i])
     }
 }
-console.log(secularParties)
+console.log(secularParties)*/
 
 let ul = document.getElementById('partiesDisplay')
 for (let i = 0; i < parties.length; i++) {
@@ -126,40 +126,8 @@ function choose(i){
                 chooseHistory[i] = "contra"
             }
         }
-        
-        for (let i = 0; i < parties.length; i++) {
-            matchCounter.push({name: parties[i]['name'], value: 0})
-        }
-        for (let i = 0; i < subjects.length; i++) {
-            for (let x = 0; x < subjects[i].parties.length; x++) {
-                if(chooseHistory[x] == subjects[i].parties[x].position){
-                    matchCounter[x]['value']++
-                }
-            }
-        }
-    
-        function sort(valuePath, array){
-            let path = valuePath.split('.')  
-          
-            return array.sort((a, b) => {
-               return getValue(b,path) - getValue(a,path)    
-            })
-          
-            function getValue(obj, path){
-              path.forEach(path => obj = obj[path])
-              return obj
-            }
-        }
-        
-        let matchCounter = sort('value', matchCounter)
-    
-        let sortedMatchList = document.createElement('ul')
-        for (let i = 0; i < matchCounter.length; i++) {
-            let li = document.createElement('li')
-            li.innerHTML = matchCounter['name']
-            sortedMatchList.appendChild(li)
-        }
-        display.appendChild(sortedMatchList)
+
+        showMatchedParties(parties)
     }
 }
 
@@ -189,30 +157,67 @@ function showTypeParty(x){
     endList.innerHTML = ""
     let ul = document.createElement('ul')
     if(x == 0){
-        ul.innerHTML = ""
-        for (let i = 0; i < parties.length; i++) {
-            let li = document.createElement('li')
-            li.innerHTML = parties[i]['name']
-            ul.appendChild(li)
-        }        
+        showMatchedParties(parties)
     }
     else if (x == 1){
-        ul.innerHTML = ""
+        let bigParties = []
         for (let i = 0; i < parties.length; i++) {
             if(parties[i].size <= minimumPartySize){
-                let li = document.createElement('li')
-                li.innerHTML = parties[i]['name']
-                ul.appendChild(li)
+                bigParties.push(parties[i])
+            }
+        }
+        showMatchedParties(bigParties)
+    }
+    else if (x == 2){
+        let secularParties = []
+        for (let i = 0; i < parties.length; i++) {
+            if(parties[i]['secular']){
+                secularParties.push(parties[i])
+            }
+        }
+        showMatchedParties(secularParties)
+    }
+    endList.appendChild(ul)
+}
+
+function showMatchedParties(tParties){
+    let matchCounter = []
+        
+    for (let i = 0; i < tParties.length; i++) {
+        matchCounter.push({name: tParties[i]['name'], value: 0})
+    }
+    for (let i = 0; i < subjects.length; i++) {
+        for (let x = 0; x < subjects[i].parties.length; x++) {
+            for (let y = 0; y < tParties.length; y++) {
+                if(tParties[y]['name'] == subjects[i].parties[x]['name']){
+                    if(chooseHistory[x] == subjects[i].parties[x].position){
+                        matchCounter[y]['value']++
+                    }
+                }
             }
         }
     }
-    else if (x == 2){
-        ul.innerHTML = ""
-        for (let i = 0; i < secularParties.length; i++) {
-            let li = document.createElement('li')
-            li.innerHTML = secularParties[i]['name']
-            ul.appendChild(li)
-        }  
+
+    function sort(valuePath, array){
+        let path = valuePath.split('.')  
+      
+        return array.sort((a, b) => {
+           return getValue(b,path) - getValue(a,path)    
+        })
+      
+        function getValue(obj, path){
+          path.forEach(path => obj = obj[path])
+          return obj
+        }
     }
-    endList.appendChild(ul)
+    
+    matchCounter = sort('value', matchCounter)
+
+    let sortedMatchList = document.createElement('ul')
+    for (let i = 0; i < matchCounter.length; i++) {
+        let li = document.createElement('li')
+        li.innerHTML = matchCounter[i]['name']
+        sortedMatchList.appendChild(li)
+    }
+    endList.appendChild(sortedMatchList)
 }
