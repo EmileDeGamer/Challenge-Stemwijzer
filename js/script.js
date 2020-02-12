@@ -4,7 +4,6 @@ let ul = document.getElementById('partiesDisplay')
 for (let i = 0; i < parties.length; i++) {
     let li = document.createElement('li')
     li.innerHTML = parties[i]['name']
-    li.style.borderRadius = "10px"
     ul.appendChild(li)
 }
 
@@ -145,41 +144,43 @@ function choose(i){
 }
 
 function previousStatement(){
-    if(document.getElementById('extraWeightQuestionsList').style.display !== "none"){
-        for (let i = 1; i < display.childNodes.length; i++) {
-            if (display.childNodes[i].style.display !== "none"){
-                display.childNodes[i].style.display = "none"
+    if(document.getElementById('extraWeightQuestionsList') !== null){
+        if(document.getElementById('extraWeightQuestionsList').style.display !== "none"){
+            for (let i = 1; i < display.childNodes.length; i++) {
+                if (display.childNodes[i].style.display !== "none"){
+                    display.childNodes[i].style.display = "none"
+                }
+                if(display.childNodes[i].id == "statementTitle" || display.childNodes[i].id == "statement" || display.childNodes[i].id == "buttonsDisplay"){
+                    display.childNodes[i].style.display = "block"
+                }
             }
-            if(display.childNodes[i].id == "statementTitle" || display.childNodes[i].id == "statement" || display.childNodes[i].id == "buttonsDisplay"){
-                display.childNodes[i].style.display = "block"
+            let tExtraWeightQuestionsList = document.getElementById('extraWeightQuestionsList')
+            if(tExtraWeightQuestionsList !== null){
+                tExtraWeightQuestionsList.remove()
             }
-        }
-        let tExtraWeightQuestionsList = document.getElementById('extraWeightQuestionsList')
-        if(tExtraWeightQuestionsList !== null){
-            tExtraWeightQuestionsList.remove()
-        }
-        let tEndButtonsDisplay = document.getElementById('endButtonsDisplay')
-        if(tEndButtonsDisplay !== null){
-            tEndButtonsDisplay.remove()
-        }
-        let tCalculateMatchButton = document.getElementById('calculateMatchButton')
-        if(tCalculateMatchButton !== null){
-            tCalculateMatchButton.remove()
-        }
-        counter = chooseHistory.length+1
-    }
-    else{
-        for (let i = 1; i < display.childNodes.length; i++) {
-            if (display.childNodes[i].style.display !== "none"){
-                display.childNodes[i].style.display = "none"
+            let tEndButtonsDisplay = document.getElementById('endButtonsDisplay')
+            if(tEndButtonsDisplay !== null){
+                tEndButtonsDisplay.remove()
             }
+            let tCalculateMatchButton = document.getElementById('calculateMatchButton')
+            if(tCalculateMatchButton !== null){
+                tCalculateMatchButton.remove()
+            }
+            counter = chooseHistory.length+1
         }
-        let tEndList = document.getElementById('endList')
-        if(tEndList !== null){
-            tEndList.remove()
+        else{
+            for (let i = 1; i < display.childNodes.length; i++) {
+                if (display.childNodes[i].style.display !== "none"){
+                    display.childNodes[i].style.display = "none"
+                }
+            }
+            let tEndList = document.getElementById('endList')
+            if(tEndList !== null){
+                tEndList.remove()
+            }
+            document.getElementById('calculateMatchButton').style.display = "block"
+            extraWeightQuestionsList.style.display = "block"
         }
-        document.getElementById('calculateMatchButton').style.display = "block"
-        extraWeightQuestionsList.style.display = "block"
     }
     
     if(counter !== 1){
@@ -194,6 +195,9 @@ function previousStatement(){
                 buttonsDisplay.childNodes[i].style.background = "black"
             }
         }
+    }
+    else{
+        location.reload()
     }
 }    
 
