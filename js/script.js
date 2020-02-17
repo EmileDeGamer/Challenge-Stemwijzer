@@ -18,8 +18,9 @@ let matchCounter = []
 let extraWeightCounter = []
 function nextStatement(){
     if(counter == 0){
-        let wrapper = document.getElementById('wrapper')
-        wrapper.innerHTML = ""
+        let container = document.getElementById('container')
+        document.getElementById('foreground').style.display = "none"
+        document.getElementById('background').style.display = "none"
         let display = document.createElement('div')
         let statementTitle = document.createElement('h1')
         let statement = document.createElement('p')
@@ -31,7 +32,7 @@ function nextStatement(){
         display.id = "display"
         statementTitle.id = "statementTitle"
         statement.id = "statement"
-        wrapper.appendChild(display)
+        container.appendChild(display)
         display.appendChild(statementTitle)
         display.appendChild(statement)
         let buttonsDisplay = document.createElement('div')
@@ -39,7 +40,7 @@ function nextStatement(){
         for (let i = 0; i < buttons.length; i++) {
             let button = document.createElement('button')
             button.innerHTML = buttons[i]
-            button.id = buttons[i].toLowerCase()
+            button.className = buttons[i].toLowerCase()
             button.onclick = function(){choose(i)}
             buttonsDisplay.appendChild(button)
         }
@@ -47,6 +48,16 @@ function nextStatement(){
         counter++
         statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
         statement.innerHTML = subjects[counter-1]['statement']
+        if(typeof chooseHistory[counter-1] !== 'undefined'){
+            for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+                if(buttonsDisplay.childNodes[i].className == chooseHistory[counter-1].toLowerCase()){
+                    buttonsDisplay.childNodes[i].style.background = "blue"
+                }
+                else{
+                    buttonsDisplay.childNodes[i].style.background = "black"
+                }
+            }
+        }
     }
 }
 
@@ -57,7 +68,7 @@ function choose(i){
         counter++
         if(typeof chooseHistory[counter-1] !== 'undefined'){
             for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
-                if(buttonsDisplay.childNodes[i].id == chooseHistory[counter-1].toLowerCase()){
+                if(buttonsDisplay.childNodes[i].className == chooseHistory[counter-1].toLowerCase()){
                     buttonsDisplay.childNodes[i].style.background = "blue"
                 }
                 else{
@@ -77,7 +88,7 @@ function choose(i){
         chooseHistory[counter-1] = buttons[i]
         if(typeof chooseHistory[counter-1] !== 'undefined'){
             for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
-                if(buttonsDisplay.childNodes[i].id == chooseHistory[counter-1].toLowerCase()){
+                if(buttonsDisplay.childNodes[i].className == chooseHistory[counter-1].toLowerCase()){
                     buttonsDisplay.childNodes[i].style.background = "blue"
                 }
                 else{
@@ -182,13 +193,12 @@ function previousStatement(){
             extraWeightQuestionsList.style.display = "block"
         }
     }
-    
     if(counter !== 1){
         counter--
         statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
         statement.innerHTML = subjects[counter-1]['statement']
         for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
-            if(buttonsDisplay.childNodes[i].id == chooseHistory[counter-1].toLowerCase()){
+            if(buttonsDisplay.childNodes[i].className == chooseHistory[counter-1].toLowerCase()){
                 buttonsDisplay.childNodes[i].style.background = "blue"
             }
             else{
@@ -197,7 +207,10 @@ function previousStatement(){
         }
     }
     else{
-        location.reload()
+        display.remove()
+        document.getElementById('foreground').style.display = "block"
+        document.getElementById('background').style.display = "block"
+        counter = 0
     }
 }    
 
@@ -282,14 +295,15 @@ function setExtraWeight(x){
     for (let i = 0; i < subjects.length; i++) {
         extraWeightCounter.push({title: subjects[i]['title'], extraWeight: false})
     }
-
     for (let i = 0; i < extraWeightCounter.length; i++) {
         if(x == i){
             if(extraWeightCounter[i]['extraWeight']){
                 extraWeightCounter[i]['extraWeight'] = false
+                document.getElementById('extraWeightQuestionsList').childNodes[x].style.color = "black"
             }
             else{
                 extraWeightCounter[i]['extraWeight'] = true
+                document.getElementById('extraWeightQuestionsList').childNodes[x].style.color = "green"
             }
         }
     }
