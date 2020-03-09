@@ -8,7 +8,7 @@ for (let i = 0; i < parties.length; i++) {
 }
 
 let startButton = document.getElementById('start')
-startButton.onclick = function(){nextStatement()}
+startButton.onclick = function(){setup()}
 
 let counter = 0
 let buttons = ['Eens', 'Geen van beide', 'Oneens', 'Sla deze vraag over ->']
@@ -16,46 +16,44 @@ let chooseHistory = []
 let convertedChooseHistory = []
 let matchCounter = []
 let extraWeightCounter = []
-function nextStatement(){
-    if(counter == 0){
-        let container = document.getElementById('container')
-        document.getElementById('foreground').style.display = "none"
-        document.getElementById('background').style.display = "none"
-        let display = document.createElement('div')
-        let statementTitle = document.createElement('h1')
-        let statement = document.createElement('p')
-        let backButton = document.createElement('button')
-        backButton.innerHTML = "<-"
-        backButton.id = "backButton"
-        backButton.onclick = function(){previousStatement()}
-        display.appendChild(backButton)
-        display.id = "display"
-        statementTitle.id = "statementTitle"
-        statement.id = "statement"
-        container.appendChild(display)
-        display.appendChild(statementTitle)
-        display.appendChild(statement)
-        let buttonsDisplay = document.createElement('div')
-        buttonsDisplay.id = "buttonsDisplay"
-        for (let i = 0; i < buttons.length; i++) {
-            let button = document.createElement('button')
-            button.innerHTML = buttons[i]
-            button.className = buttons[i].toLowerCase()
-            button.onclick = function(){choose(i)}
-            buttonsDisplay.appendChild(button)
-        }
-        display.appendChild(buttonsDisplay)
-        counter++
-        statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
-        statement.innerHTML = subjects[counter-1]['statement']
-        if(typeof chooseHistory[counter-1] !== 'undefined'){
-            for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
-                if(buttonsDisplay.childNodes[i].className == chooseHistory[counter-1].toLowerCase()){
-                    buttonsDisplay.childNodes[i].style.background = "blue"
-                }
-                else{
-                    buttonsDisplay.childNodes[i].style.background = "black"
-                }
+function setup(){
+    let container = document.getElementById('container')
+    document.getElementById('foreground').style.display = "none"
+    document.getElementById('background').style.display = "none"
+    let display = document.createElement('div')
+    let statementTitle = document.createElement('h1')
+    let statement = document.createElement('p')
+    let backButton = document.createElement('button')
+    backButton.innerHTML = "<-"
+    backButton.id = "backButton"
+    backButton.onclick = function(){previousStatement()}
+    display.appendChild(backButton)
+    display.id = "display"
+    statementTitle.id = "statementTitle"
+    statement.id = "statement"
+    container.appendChild(display)
+    display.appendChild(statementTitle)
+    display.appendChild(statement)
+    let buttonsDisplay = document.createElement('div')
+    buttonsDisplay.id = "buttonsDisplay"
+    for (let i = 0; i < buttons.length; i++) {
+        let button = document.createElement('button')
+        button.innerHTML = buttons[i]
+        button.className = buttons[i].toLowerCase()
+        button.onclick = function(){choose(i)}
+        buttonsDisplay.appendChild(button)
+    }
+    display.appendChild(buttonsDisplay)
+    counter++
+    statementTitle.innerHTML = counter + ". " + subjects[counter-1]['title']
+    statement.innerHTML = subjects[counter-1]['statement']
+    if(typeof chooseHistory[counter-1] !== 'undefined'){
+        for (let i = 0; i < buttonsDisplay.childNodes.length-1; i++) {
+            if(buttonsDisplay.childNodes[i].className == chooseHistory[counter-1].toLowerCase()){
+                buttonsDisplay.childNodes[i].style.background = "blue"
+            }
+            else{
+                buttonsDisplay.childNodes[i].style.background = "black"
             }
         }
     }
@@ -101,11 +99,13 @@ function choose(i){
                 buttonsDisplay.childNodes[i].style.background = "black"
             }
         }
-        
         for (let i = 1; i < display.childNodes.length; i++) {
             display.childNodes[i].style.display = "none"
         }
-
+        let matchCalculateTitle = document.createElement('h1')
+        matchCalculateTitle.id = "matchCalculateTitle"
+        matchCalculateTitle.innerHTML = "Welke vragen krijgen meer gewicht?"
+        display.appendChild(matchCalculateTitle)
         let extraWeightQuestionsList = document.createElement('ul')
         extraWeightQuestionsList.id = "extraWeightQuestionsList"
         for (let i = 0; i < subjects.length; i++) {
@@ -115,7 +115,6 @@ function choose(i){
             extraWeightQuestionsList.appendChild(li)
         }
         display.appendChild(extraWeightQuestionsList)
-            
         let nextButton = document.createElement('button')
         nextButton.innerHTML = "Calculate Match"
         nextButton.id = "calculateMatchButton"
@@ -131,7 +130,7 @@ function choose(i){
                     convertedChooseHistory.push("contra")
                 }
             }
-
+            document.getElementById('matchCalculateTitle').innerHTML = "Uw match"
             let endButtons = ['Alle', 'Grote', 'Seculiere']
             let endList = document.createElement('div')
             endList.id = "endList"
@@ -151,7 +150,7 @@ function choose(i){
             showMatchedParties(parties)
         }
         display.appendChild(nextButton)
-        }
+    }
 }
 
 function previousStatement(){
@@ -173,6 +172,10 @@ function previousStatement(){
             if(tEndButtonsDisplay !== null){
                 tEndButtonsDisplay.remove()
             }
+            let tMatchCalculateTitle = document.getElementById('matchCalculateTitle')
+            if(tMatchCalculateTitle !== null){
+                tMatchCalculateTitle.remove()
+            }
             let tCalculateMatchButton = document.getElementById('calculateMatchButton')
             if(tCalculateMatchButton !== null){
                 tCalculateMatchButton.remove()
@@ -188,6 +191,18 @@ function previousStatement(){
             let tEndList = document.getElementById('endList')
             if(tEndList !== null){
                 tEndList.remove()
+            }
+            let tEndButtonsDisplay = document.getElementById('endButtonsDisplay')
+            if(tEndButtonsDisplay !== null){
+                tEndButtonsDisplay.remove()
+            }
+            let matchCalculateTitle = document.getElementById('matchCalculateTitle')
+            matchCalculateTitle.style.display = "block"
+            if(matchCalculateTitle.innerHTML == "Welke vragen krijgen meer gewicht?"){
+                matchCalculateTitle.innerHTML = "Uw match"
+            }
+            else{
+                matchCalculateTitle.innerHTML = "Welke vragen krijgen meer gewicht?"
             }
             document.getElementById('calculateMatchButton').style.display = "block"
             extraWeightQuestionsList.style.display = "block"
@@ -303,7 +318,7 @@ function setExtraWeight(x){
             }
             else{
                 extraWeightCounter[i]['extraWeight'] = true
-                document.getElementById('extraWeightQuestionsList').childNodes[x].style.color = "green"
+                document.getElementById('extraWeightQuestionsList').childNodes[x].style.color = "rgb(20, 172, 223)"
             }
         }
     }

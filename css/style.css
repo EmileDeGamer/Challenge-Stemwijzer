@@ -24,7 +24,7 @@ body #container {
 
 body #container #foreground, body #container #background, body #container #display {
   width: 100%;
-  height: 800px;
+  height: 900px;
   z-index: 2;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -89,7 +89,8 @@ body #container #foreground #start:hover {
 }
 
 body #container #display {
-  width: 1000px;
+  width: 100%;
+  height: 900px;
 }
 
 body #container #display h1 {
@@ -117,7 +118,7 @@ body #container #display #backButton:hover {
 
 body #container #display #buttonsDisplay {
   position: absolute;
-  bottom: 300px;
+  bottom: 500px;
   margin: 20px;
 }
 
